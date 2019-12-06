@@ -15,7 +15,7 @@ public class BoardManager : MonoBehaviour
     public TileBase floor;
 
     private int tileID = 0;
-    private int tileObjID = 0;
+    private int tileObjID = 0; //TODO
     private bool tileoccupied = false;
     private TYPE tileType;
 
@@ -27,7 +27,7 @@ public class BoardManager : MonoBehaviour
         }
 
         tiles = new List<Tile>();
-        tilemap.CompressBounds();
+        tilemap.CompressBounds(); // Clamp the tilemap, in case it was edited recently
 
         PopulateTiles();
     }
@@ -54,7 +54,7 @@ public class BoardManager : MonoBehaviour
                     Debug.Log("Found an objective tile at: " + pos);
                     tileType = TYPE.OBJECTIVE;
                     
-                    //tileObjID = getID
+                    //GET OBJ ID
                 }
                 else if (tilemapSprite == tileSprites[3]) // Box
                 {
@@ -62,7 +62,7 @@ public class BoardManager : MonoBehaviour
                     tileType = TYPE.FLOOR;
                     tileoccupied = true;
 
-                    //GetTileBoxID
+                    // GET BOX ID
 
                     TileBase current = tilemap.GetTile(pos);
                     tilemap.SwapTile(current, floor);
@@ -71,7 +71,7 @@ public class BoardManager : MonoBehaviour
                 {
                     Debug.Log("Found player tile at: " + pos);
                     TileBase current = tilemap.GetTile(pos);
-                    tilemap.SwapTile(current, floor);
+                    tilemap.SwapTile(current, floor); //THIS SEMS BROKEN NOW
                 }
                 else
                 {
@@ -135,16 +135,6 @@ public class BoardManager : MonoBehaviour
 
         foreach (Tile t in tiles)
         {
-            if (t.GetPos() == currentTile)
-            {
-                Debug.LogWarning(t.GetID());
-                tiles[t.GetID()].SetOccupied(false);
-                break;
-            }
-        }
-
-        foreach (Tile t in tiles)
-        {
             if (t.GetPos() == targetTile)
             {
                 Debug.Log("Found Next Tile: " + targetTile);
@@ -156,6 +146,17 @@ public class BoardManager : MonoBehaviour
                 {
                     box.transform.position += direction;
                     Debug.Log("Box moving");
+
+                    foreach (Tile thisTile in tiles)
+                    {
+                        if (thisTile.GetPos() == currentTile)
+                        {
+                            Debug.LogWarning(t.GetID());
+                            tiles[thisTile.GetID()].SetOccupied(false);
+                            break;
+                        }
+                    }
+
                     tiles[t.GetID()].SetOccupied(true);
                    
                     return true;

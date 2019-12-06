@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     {
         direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
 
-        if(direction.x == 0 && direction.y == 0)
+        if(direction.x == 0 && direction.y == 0) // Only let the player move once per keypress
         {
             hasmoved = true;
         }
@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
         {
             if (direction.x != 0 || direction.y != 0)
             {
-                Debug.Log("Attempting move: " + transform.position + " to " + (transform.position + direction));
                 Move();
                 hasmoved = false;
             }
@@ -29,7 +28,7 @@ public class Player : MonoBehaviour
     {
         bool validmove = false;
 
-        validmove = BoardManager.instance.GetTile(transform.position, transform.position + direction, direction);
+        validmove = BoardManager.instance.GetTile(transform.position, transform.position + direction, direction); // Check wether the target tile is free/valid
 
         if(validmove)
         {
