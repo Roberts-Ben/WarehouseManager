@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro;
 
 public class BoardManager : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class BoardManager : MonoBehaviour
     private int tileObjID = 0;
     private bool tileoccupied = false;
     private TYPE tileType;
+
+    public int moves;
+    public TMP_Text movesLabel;
 
     void Start()
     {
@@ -54,7 +58,7 @@ public class BoardManager : MonoBehaviour
 
     public void PopulateTiles()
     {
-        foreach (var pos in tilemap.cellBounds.allPositionsWithin)
+        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
         {
             if (tilemap.HasTile(pos))
             {
@@ -75,21 +79,20 @@ public class BoardManager : MonoBehaviour
 
                     tileObjID = FindObjective(pos);
 
-                    //SwitchTile(tilemap.GetTile(pos));
+                    SwitchTile(pos);
                 }
                 else if (tilemapSprite == tileSprites[3]) // Box
                 {
                     tileType = TYPE.BOX;
                     tileoccupied = true;
-                    Debug.LogWarning("tile at: " + pos + " is occupied");
 
                     tileObjID = FindObjective(pos);
 
-                    //SwitchTile(tilemap.GetTile(pos));
+                    SwitchTile(pos);
                 }
                 else if (tilemapSprite == tileSprites[4]) // Player
                 {
-                    //SwitchTile(tilemap.GetTile(pos));
+                    SwitchTile(pos);
                 }
                 else
                 {
@@ -119,7 +122,7 @@ public class BoardManager : MonoBehaviour
     {
         foreach (Objective o in objectivePositions)
         {
-            if (o.position == pos)
+            if (o.position == pos && o.GetBox())
             {
                 return o.GetObj();
             }
@@ -127,9 +130,9 @@ public class BoardManager : MonoBehaviour
         return null;
     }
 
-    public void SwitchTile(TileBase t)
+    public void SwitchTile(Vector3Int pos)
     {
-        tilemap.SwapTile(t, floor);
+        tilemap.SetTile(pos, floor);
     }
 
     public bool GetTile(Vector3 pos, Vector3 targetPos, Vector3 direction)
@@ -150,6 +153,8 @@ public class BoardManager : MonoBehaviour
 
                     if (canMoveBox)
                     {
+                        moves++;
+                        UpdateMoves();
                         return true;
                     }
                     else
@@ -160,6 +165,8 @@ public class BoardManager : MonoBehaviour
                 else if (t.GetTileType() != TYPE.WALL)
                 {
                     Debug.Log("Floor Tile. Moving to: " + tilemap.GetCellCenterWorld(targetTile));
+                    moves++;
+                    UpdateMoves();
                     return true;
                 }
                 else
@@ -220,5 +227,15 @@ public class BoardManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void UpdateMoves()
+    {
+        movesLabel.text = "Moves: " + moves;
+    }
+
+    public void ResetLevel()
+    {
+        SceneManager.LoadScene(0);
     }
 }

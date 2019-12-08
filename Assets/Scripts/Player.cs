@@ -7,6 +7,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            BoardManager.instance.ResetLevel();
+        }
+
         direction = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
 
         if(direction.x == 0 && direction.y == 0) // Only let the player move once per keypress
