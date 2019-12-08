@@ -8,14 +8,16 @@ public class BoardManager : MonoBehaviour
     public static BoardManager instance;
 
     public Tilemap tilemap;
+
     public List<Tile> tiles;
+    public List<GameObject> objectives;
+    public List<Objective> objectivePositions;
 
     public List<Sprite> tileSprites;
-
     public TileBase floor;
 
     private int tileID = 0;
-    private int tileObjID = 0; //TODO
+    private int tileObjID = 0;
     private bool tileoccupied = false;
     private TYPE tileType;
 
@@ -27,9 +29,27 @@ public class BoardManager : MonoBehaviour
         }
 
         tiles = new List<Tile>();
+        objectivePositions = new List<Objective>();
+
         tilemap.CompressBounds(); // Clamp the tilemap, in case it was edited recently
 
+        PopulateObjectives();
         PopulateTiles();
+    }
+
+    public void PopulateObjectives()
+    {
+        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Objective");
+        foreach (GameObject go in objectsWithTag)
+        {
+            ObjectiveInfo objectiveInfo = go.GetComponent<ObjectiveInfo>();
+
+            Vector3Int objectiveTile = tilemap.WorldToCell(go.transform.position);
+
+            Objective newObjective = new Objective(go, objectiveInfo.box, objectiveInfo.objectiveID, objectiveTile);
+            objectivePositions.Add(newObjective);
+            objectives.Add(go);
+        }
     }
 
     public void PopulateTiles()
@@ -51,27 +71,25 @@ public class BoardManager : MonoBehaviour
                 }
                 else if (tilemapSprite == tileSprites[2]) // Objective
                 {
-                    Debug.Log("Found an objective tile at: " + pos);
                     tileType = TYPE.OBJECTIVE;
-                    
-                    //GET OBJ ID
+
+                    tileObjID = FindObjective(pos);
+
+                    //SwitchTile(tilemap.GetTile(pos));
                 }
                 else if (tilemapSprite == tileSprites[3]) // Box
                 {
-                    Debug.Log("Found a box tile at: " + pos);
-                    tileType = TYPE.FLOOR;
+                    tileType = TYPE.BOX;
                     tileoccupied = true;
+                    Debug.LogWarning("tile at: " + pos + " is occupied");
 
-                    // GET BOX ID
+                    tileObjID = FindObjective(pos);
 
-                    TileBase current = tilemap.GetTile(pos);
-                    tilemap.SwapTile(current, floor);
+                    //SwitchTile(tilemap.GetTile(pos));
                 }
                 else if (tilemapSprite == tileSprites[4]) // Player
                 {
-                    Debug.Log("Found player tile at: " + pos);
-                    TileBase current = tilemap.GetTile(pos);
-                    tilemap.SwapTile(current, floor); //THIS SEMS BROKEN NOW
+                    //SwitchTile(tilemap.GetTile(pos));
                 }
                 else
                 {
@@ -83,6 +101,35 @@ public class BoardManager : MonoBehaviour
 
             tileID++;
         }
+    }
+
+    public int FindObjective(Vector3 pos)
+    {
+        foreach (Objective o in objectivePositions)
+        {
+            if (o.position == pos)
+            {
+                return o.objectiveID;
+            }
+        }
+        return 0;
+    }
+
+    public GameObject FindObjectiveObj(Vector3 pos)
+    {
+        foreach (Objective o in objectivePositions)
+        {
+            if (o.position == pos)
+            {
+                return o.GetObj();
+            }
+        }
+        return null;
+    }
+
+    public void SwitchTile(TileBase t)
+    {
+        tilemap.SwapTile(t, floor);
     }
 
     public bool GetTile(Vector3 pos, Vector3 targetPos, Vector3 direction)
@@ -110,7 +157,7 @@ public class BoardManager : MonoBehaviour
                         return false;
                     }
                 }
-                else if (t.GetTileType() == TYPE.FLOOR)
+                else if (t.GetTileType() != TYPE.WALL)
                 {
                     Debug.Log("Floor Tile. Moving to: " + tilemap.GetCellCenterWorld(targetTile));
                     return true;
@@ -131,7 +178,7 @@ public class BoardManager : MonoBehaviour
         Vector3Int currentTile = tilemap.WorldToCell(pos);
         Vector3Int targetTile = tilemap.WorldToCell(targetPos);
 
-        GameObject box = GameObject.Find("Box"); //TEMP HACK NEED TO GET ACTUAL BOX
+        GameObject box = FindObjectiveObj(currentTile);
 
         foreach (Tile t in tiles)
         {
@@ -147,11 +194,18 @@ public class BoardManager : MonoBehaviour
                     box.transform.position += direction;
                     Debug.Log("Box moving");
 
+                    foreach (Objective o in objectivePositions)
+                    {
+                        if (o.position == currentTile)
+                        {
+                            o.position = targetTile;
+                        }
+                    }
+
                     foreach (Tile thisTile in tiles)
                     {
                         if (thisTile.GetPos() == currentTile)
                         {
-                            Debug.LogWarning(t.GetID());
                             tiles[thisTile.GetID()].SetOccupied(false);
                             break;
                         }
