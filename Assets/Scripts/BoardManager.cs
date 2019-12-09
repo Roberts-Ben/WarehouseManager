@@ -23,6 +23,8 @@ public class BoardManager : MonoBehaviour
     private TYPE tileType;
 
     public int moves;
+    public int totalObjectives;
+
     public TMP_Text movesLabel;
 
     void Start()
@@ -53,6 +55,11 @@ public class BoardManager : MonoBehaviour
             Objective newObjective = new Objective(go, objectiveInfo.box, objectiveInfo.objectiveID, objectiveTile);
             objectivePositions.Add(newObjective);
             objectives.Add(go);
+
+            if(objectiveInfo.box)
+            {
+                totalObjectives++;
+            }
         }
     }
 
@@ -144,10 +151,10 @@ public class BoardManager : MonoBehaviour
         {
             if(t.GetPos() == targetTile)
             {
-                Debug.Log("Found Tile: " + targetTile);
+                //Debug.Log("Found Tile: " + targetTile);
                 if (t.GetOccupied())
                 {
-                    Debug.Log("There is a box here");  
+                    //Debug.Log("There is a box here");  
 
                     bool canMoveBox = GetNextTile(targetPos, targetPos + direction, direction);
 
@@ -164,7 +171,7 @@ public class BoardManager : MonoBehaviour
                 }
                 else if (t.GetTileType() != TYPE.WALL)
                 {
-                    Debug.Log("Floor Tile. Moving to: " + tilemap.GetCellCenterWorld(targetTile));
+                    //Debug.Log("Floor Tile. Moving to: " + tilemap.GetCellCenterWorld(targetTile));
                     moves++;
                     UpdateMoves();
                     return true;
@@ -191,7 +198,7 @@ public class BoardManager : MonoBehaviour
         {
             if (t.GetPos() == targetTile)
             {
-                Debug.Log("Found Next Tile: " + targetTile);
+                //Debug.Log("Found Next Tile: " + targetTile);
                 if (t.GetOccupied() || t.GetTileType() == TYPE.WALL)
                 {
                     return false;
@@ -199,7 +206,7 @@ public class BoardManager : MonoBehaviour
                 else 
                 {
                     box.transform.position += direction;
-                    Debug.Log("Box moving");
+                    //Debug.Log("Box moving");
 
                     foreach (Objective o in objectivePositions)
                     {
@@ -227,6 +234,38 @@ public class BoardManager : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void CheckObjectives()
+    {
+        int objectivesMet = 0;
+
+        foreach(GameObject go in objectives)
+        {
+            ObjectiveInfo info = go.GetComponent<ObjectiveInfo>();
+
+            if(info.box) // If we are checking a box
+            {
+                Vector3Int currentTile = tilemap.WorldToCell(go.transform.position);
+                int ID = info.objectiveID;
+
+                foreach(Objective o in objectivePositions)
+                {
+                    if(currentTile == o.position && !o.GetBox()) // If the box is on an objective space
+                    {
+                        if(o.objectiveID == ID)
+                        {
+                            objectivesMet++;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(objectivesMet == totalObjectives)
+        {
+            Debug.LogError("Level Complete");
+        }
     }
 
     public void UpdateMoves()

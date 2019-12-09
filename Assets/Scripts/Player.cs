@@ -39,6 +39,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("Player moving");
             transform.position += direction;
+            BoardManager.instance.CheckObjectives();
         }
     }
 }
