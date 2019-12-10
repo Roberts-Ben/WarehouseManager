@@ -265,6 +265,7 @@ public class BoardManager : MonoBehaviour
         if(objectivesMet == totalObjectives)
         {
             Debug.LogError("Level Complete");
+            SceneManager.LoadScene(0);
         }
     }
 
@@ -275,6 +276,6 @@ public class BoardManager : MonoBehaviour
 
     public void ResetLevel()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
