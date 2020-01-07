@@ -6418,6 +6418,8 @@ MonoBehaviour:
   levelPanel: {fileID: 1542889732}
   levelButtonObjects: []
   levelButtons: []
+  levelsUnlocked: 0
+  levelsCompleted: 0
 --- !u!1 &1346642316
 GameObject:
   m_ObjectHideFlags: 0

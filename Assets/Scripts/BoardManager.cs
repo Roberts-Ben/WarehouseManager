@@ -265,6 +265,7 @@ public class BoardManager : MonoBehaviour
         if(objectivesMet == totalObjectives)
         {
             Debug.LogError("Level Complete");
+            Menu.instance.NewLevelComplete();
             SceneManager.LoadScene(0);
         }
     }
