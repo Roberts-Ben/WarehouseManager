@@ -206,16 +206,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 11099078}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 20
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-10
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &11099076
@@ -270,6 +270,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 10
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &24292148
 GameObject:
   m_ObjectHideFlags: 0
@@ -758,16 +760,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 242576982}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 16
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-6
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &242576980
@@ -822,6 +824,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 6
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &268870246
 GameObject:
   m_ObjectHideFlags: 0
@@ -905,8 +909,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: Back
         m_Mode: 1
         m_Arguments:
@@ -1342,16 +1346,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 360837197}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 17
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-7
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &360837195
@@ -1406,6 +1410,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 7
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &414718632
 GameObject:
   m_ObjectHideFlags: 0
@@ -1967,16 +1973,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 535523761}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 6
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-6
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &535523759
@@ -2031,6 +2037,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 6
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &556461504
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,16 +2290,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 563284137}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 14
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-4
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &563284135
@@ -2346,6 +2354,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 4
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &574884919
 GameObject:
   m_ObjectHideFlags: 0
@@ -2540,8 +2550,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2566,7 +2576,7 @@ Transform:
   m_GameObject: {fileID: 585927164}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 0, z: -11}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2656,16 +2666,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 590054709}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 2
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &590054707
@@ -2720,6 +2730,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 2
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &617098032
 GameObject:
   m_ObjectHideFlags: 0
@@ -3166,16 +3178,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 668422350}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 5
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-5
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &668422348
@@ -3230,6 +3242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 5
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &687595355
 GameObject:
   m_ObjectHideFlags: 0
@@ -3393,16 +3407,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 751824341}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 7
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-7
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &751824339
@@ -3457,6 +3471,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 7
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &753355869
 GameObject:
   m_ObjectHideFlags: 0
@@ -3742,8 +3758,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: Options
         m_Mode: 1
         m_Arguments:
@@ -4012,16 +4028,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 856202694}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 3
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-3
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &856202692
@@ -4076,6 +4092,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 3
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &881673781
 GameObject:
   m_ObjectHideFlags: 0
@@ -4160,16 +4178,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 881673786}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 9
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-9
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &881673784
@@ -4224,6 +4242,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 9
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1036180589
 GameObject:
   m_ObjectHideFlags: 0
@@ -4521,16 +4541,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1051134941}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 1
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1051134939
@@ -4585,6 +4605,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 1
+  levelUnlocked: 1
+  levelCompleted: 0
 --- !u!1 &1063892743
 GameObject:
   m_ObjectHideFlags: 0
@@ -4804,16 +4826,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1097087834}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 13
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-3
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1097087832
@@ -4868,6 +4890,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 3
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1115989393
 GameObject:
   m_ObjectHideFlags: 0
@@ -5353,8 +5377,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: Play
         m_Mode: 1
         m_Arguments:
@@ -5621,16 +5645,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1249037177}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 12
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-2
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1249037175
@@ -5685,6 +5709,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 2
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1272473700
 GameObject:
   m_ObjectHideFlags: 0
@@ -6104,7 +6130,6 @@ GameObject:
   - component: {fileID: 1288585092}
   - component: {fileID: 1288585091}
   - component: {fileID: 1288585090}
-  - component: {fileID: 1288585094}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -6198,26 +6223,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1288585094
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1288585089}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fa4d8254357d444e910705f86fb5415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mainPanel: {fileID: 274524139}
-  optionsPanel: {fileID: 559808522}
-  levelPanel: {fileID: 1542889732}
-  levelButtonObjects: []
-  levelIDs: []
-  levelButtons: []
-  levelsUnlocked: 0
-  levelsCompleted: 0
 --- !u!1 &1346642316
 GameObject:
   m_ObjectHideFlags: 0
@@ -6302,16 +6307,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1346642321}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 19
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-9
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1346642319
@@ -6366,6 +6371,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 9
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1422654664
 GameObject:
   m_ObjectHideFlags: 0
@@ -6584,16 +6591,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1435442669}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 11
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1435442667
@@ -6648,6 +6655,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 1
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1454878228
 GameObject:
   m_ObjectHideFlags: 0
@@ -6732,16 +6741,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1454878233}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 15
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-5
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1454878231
@@ -6796,6 +6805,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 5
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1497081813
 GameObject:
   m_ObjectHideFlags: 0
@@ -6880,16 +6891,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1497081818}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 18
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 2-8
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1497081816
@@ -6944,6 +6955,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 2
   levelID: 8
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1542889732
 GameObject:
   m_ObjectHideFlags: 0
@@ -7197,16 +7210,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1563255462}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 10
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-10
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1563255460
@@ -7261,6 +7274,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 10
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1577228408
 GameObject:
   m_ObjectHideFlags: 0
@@ -7479,16 +7494,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1593453136}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 8
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-8
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1593453134
@@ -7543,6 +7558,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 8
+  levelUnlocked: 0
+  levelCompleted: 0
 --- !u!1 &1618449385
 GameObject:
   m_ObjectHideFlags: 0
@@ -7894,8 +7911,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: Back
         m_Mode: 1
         m_Arguments:
@@ -8028,16 +8045,16 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: LoadLevel
-        m_Mode: 3
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1791232788}
+          m_ObjectArgumentAssemblyTypeName: LevelID, Assembly-CSharp
           m_IntArgument: 4
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: 1-4
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1791232786
@@ -8092,6 +8109,64 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldID: 1
   levelID: 4
+  levelUnlocked: 0
+  levelCompleted: 0
+--- !u!1 &1885705018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1885705020}
+  - component: {fileID: 1885705019}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1885705019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885705018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0fa4d8254357d444e910705f86fb5415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainPanel: {fileID: 274524139}
+  optionsPanel: {fileID: 559808522}
+  levelPanel: {fileID: 1542889732}
+  levelButtonObjects: []
+  levelIDs: []
+  levelButtons: []
+  maxLevelReached: 0
+  levelsUnlocked: 0
+  levelsCompleted: 0
+  levelFile: 
+  selectedLevel: 0
+  canvas: {fileID: 1288585089}
+--- !u!4 &1885705020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1885705018}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -13.415241, y: 0.8771043, z: 2.4913938}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1909435782
 GameObject:
   m_ObjectHideFlags: 0
@@ -8443,8 +8518,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1288585094}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: 1885705019}
+        m_TargetAssemblyTypeName: Menu, Assembly-CSharp
         m_MethodName: Quit
         m_Mode: 1
         m_Arguments:
@@ -8501,3 +8576,4 @@ SceneRoots:
   - {fileID: 654905944}
   - {fileID: 1288585093}
   - {fileID: 758481866}
+  - {fileID: 1885705020}

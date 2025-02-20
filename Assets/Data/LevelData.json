@@ -1,0 +1,102 @@
+[
+  {
+    "levelID": 1,
+    "levelUnlocked": true,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 2,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 3,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 4,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 5,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 6,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 7,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 8,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 9,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 10,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 2,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 4,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 6,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 8,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 10,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 12,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 14,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 16,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 18,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  },
+  {
+    "levelID": 20,
+    "levelUnlocked": false,
+    "levelCompleted": false
+  }
+]

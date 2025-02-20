@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System;
-using UnityEngine.TextCore.Text;
+using System.IO;
+using UnityEngine.UI;
+using Newtonsoft.Json;
 
 public class Menu : MonoBehaviour
 {
@@ -20,32 +20,43 @@ public class Menu : MonoBehaviour
     public List<LevelID> levelIDs;
     public List<Button> levelButtons;
 
-    public int levelsUnlocked;
-    public int levelsCompleted;
+    public int maxLevelReached;
+
+    public string levelFile;
+    public int selectedLevel;
+
+    public GameObject canvas;
+
+    public string levelJSON;
+    public List<LevelSaveData> levelSaveData;
 
     public void Awake()
     {
-        instance = this;
-
-        CheckPrefs();
-
-        levelsUnlocked = PlayerPrefs.GetInt("levelsUnlocked", 1);
-        levelsCompleted = PlayerPrefs.GetInt("levelsCompleted", 0);
+        if(instance == null)
+        {
+            instance = this;
+        }
 
         LoadAndSortLevels();
 
         optionsPanel.SetActive(false);
         levelPanel.SetActive(false);
 
-        SavePrefs();
+        //SavePrefs();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            ResetPrefs();
+        }
+    }
     public void Play()
     {
         mainPanel.SetActive(false);
         levelPanel.SetActive(true);
     }
-
     public void Options()
     {
         mainPanel.SetActive(false);
@@ -74,55 +85,98 @@ public class Menu : MonoBehaviour
 
         levelIDs = levelIDs.OrderBy(w => w.worldID).ThenBy(l => l.levelID).ToList();
 
-        foreach (LevelID level in levelIDs)
+        LoadPrefs();
+
+        for(int i = 0; i < levelSaveData.Count(); i++)
         {
-            Button newBtn = level.gameObject.GetComponent<Button>();
+            Button newBtn = levelIDs[i].gameObject.GetComponent<Button>();
             levelButtons.Add(newBtn);
-            newBtn.interactable = false;
-        }
 
-        for (int i = 0; i <= levelButtons.Count; i++)
-        {
-            if (i < levelsUnlocked)
+            if (levelSaveData[i].levelUnlocked)
             {
-                levelButtons[i].interactable = true;
+                newBtn.interactable = true;
             }
-
-            if (i < levelsCompleted)
+            else
             {
-                levelButtons[i].GetComponent<Image>().color = Color.green;
+                newBtn.interactable = false;
+            }
+            if (levelSaveData[i].levelCompleted)
+            {
+                levelIDs[i].GetComponent<Image>().color = Color.green;
             }
         }
     }
 
-   public void LoadLevel(int level)
+   public void LoadLevel(LevelID levelID)
     {
-        SceneManager.LoadScene(level);
-    }
+        levelFile = levelID.worldID + "-" + levelID.levelID;
+        selectedLevel = levelID.worldID * levelID.levelID;
+        canvas.SetActive(false);
 
+        SceneManager.LoadScene("Level", LoadSceneMode.Additive);
+    }
     public void NewLevelComplete()
     {
-        levelsCompleted++;
-        levelsUnlocked++;
+        LoadAndSortLevels();
+        canvas.SetActive(true);
+        if (!levelIDs[selectedLevel].GetLevelCompleted())
+        {
+            Debug.Log("Newly completed level");
+            levelIDs[selectedLevel - 1].SetLevelCompleted(true);
+            levelIDs[selectedLevel].SetLevelUnlocked(true);
+        }
         SavePrefs();
     }
 
-    public void CheckPrefs()
+    public void ResetPrefs()
     {
-        if (!PlayerPrefs.HasKey("levelsUnlocked"))
+        Debug.LogWarning("Resetting prefs");
+        foreach(LevelSaveData levelData in levelSaveData)
         {
-            PlayerPrefs.SetInt("levelsUnlocked", 1);
+            if(levelData.levelID == 1)
+            {
+                levelData.levelUnlocked = true;
+                levelData.levelCompleted = false;
+            }
+            else
+            {
+                levelData.levelUnlocked = false;
+                levelData.levelCompleted = false;
+            }    
         }
-        if (!PlayerPrefs.HasKey("levelsCompleted"))
-        {
-            PlayerPrefs.SetInt("levelsCompleted", 0);
-        }
+        SavePrefs();
+    }
+    public void LoadPrefs()
+    {
+        Debug.Log("Loading prefs");
+        string str = File.ReadAllText(Application.dataPath + "/Data/LevelData.json");
+        levelSaveData = JsonConvert.DeserializeObject<List<LevelSaveData>>(str);
     }
     public void SavePrefs()
     {
-        PlayerPrefs.SetInt("levelsUnlocked", levelsUnlocked);
-        PlayerPrefs.SetInt("levelsCompleted", levelsCompleted);
+        Debug.Log("saving prefs");
+        levelSaveData = new();
 
-        PlayerPrefs.Save();
+        foreach (LevelID levelID in levelIDs)
+        {
+            LevelSaveData levelData = new()
+            {
+                levelID = levelID.worldID * levelID.levelID,
+                levelUnlocked = levelID.levelUnlocked,
+                levelCompleted = levelID.levelCompleted
+            };
+
+            levelSaveData.Add(levelData);
+        }
+        string json = JsonConvert.SerializeObject(levelSaveData, Formatting.Indented);
+        File.WriteAllText(Application.dataPath + "/Data/LevelData.json", json);
     }
+}
+
+[Serializable]
+public class LevelSaveData
+{
+    [SerializeField] public int levelID;
+    [SerializeField] public bool levelUnlocked;
+    [SerializeField] public bool levelCompleted;
 }

@@ -16,8 +16,6 @@ public class BoardManager : MonoBehaviour
     public List<Tile> tiles;
     public List<GameObject> objectives;
     public List<Objective> objectivePositions;
-
-    public List<Sprite> tileSprites;
     public List<TileBase> tileBases;
 
     public GameObject boxObjective;
@@ -45,6 +43,11 @@ public class BoardManager : MonoBehaviour
             instance = this;
         }
 
+        LevelLoad();
+    }
+
+    public void LevelLoad()
+    {
         tiles = new List<Tile>();
         objectivePositions = new List<Objective>();
 
@@ -90,7 +93,7 @@ public class BoardManager : MonoBehaviour
 
     public void GenerateMapFromFile()
     {
-        StreamReader reader = new(Application.dataPath + "/Resources/1-1.txt", Encoding.Default);
+        StreamReader reader = new(Application.dataPath + "/Resources/" + Menu.instance.levelFile + ".txt", Encoding.Default);
 
         string line = reader.ReadLine();
         string[] subs = line.Split('x');
@@ -113,68 +116,47 @@ public class BoardManager : MonoBehaviour
             for (int x = 0; x < line.Length; x++)
             {
                 tileoccupied = false;
-                switch (tileChar[x])
+                int tileToPlace = 0;
+
+                if (tileChar[x] == '#')
                 {
-                    case '#': // Wall
-                        tilePos = new Vector3Int(x, -row, 0);
-
-                        tileType = TYPE.WALL;
-
-                        SwitchTile(tilePos, 0);
-                        break;
-                    case '0': // Walkable
-                        tilePos = new Vector3Int(x, -row, 0);
-
-                        tileType = TYPE.FLOOR;
-
-                        SwitchTile(tilePos, 1);
-                        break;
-                    case 'P': // Player spawn
-                        tilePos = new Vector3Int(x, -row, 0);
-
-                        tileType = TYPE.FLOOR;
-
-                        GameObject player = Instantiate(playerObj, (tilePos + tileObjOffset) - Vector3Int.forward, Quaternion.identity);
-
-                        SwitchTile(tilePos, 1);
-                        break;
-                    case 'A': // Objective A spawn
-                        tilePos = new Vector3Int(x, -row, 0);
-
-                        tileType = TYPE.BOX;
-                        tileoccupied = true;
-                        tileObjID = 1;
-
-                        SwitchTile(tilePos, 1);
-                        break;
-                    case 'a': // Objective A target
-                        tilePos = new Vector3Int(x, -row, 0);
-
-                        tileType = TYPE.OBJECTIVE;
-                        tileObjID = 1;
-
-                        SwitchTile(tilePos, 2);
-                        break;
-                    case 'B': // Objective B spawn
-                        tilePos = new Vector3Int(x, -row, 0);
-
-                        tileType = TYPE.BOX;
-                        tileoccupied = true;
-                        tileObjID = 2;
-
-                        SwitchTile(tilePos, 1);
-                        break;
-                    case 'b': // Objective B target
-                        tilePos = new Vector3Int(x, -row, 0);
-
-                        tileType = TYPE.OBJECTIVE;
-                        tileObjID = 2;
-
-                        SwitchTile(tilePos, 2);
-                        break;
-                    default:
-                        break;
+                    tilePos = new Vector3Int(x, -row, 0);
+                    tileType = TYPE.WALL;
+                    tileToPlace = 0;
                 }
+                else if (tileChar[x] == '0')
+                {
+                    tilePos = new Vector3Int(x, -row, 0);
+                    tileType = TYPE.FLOOR;
+                    tileToPlace = 1;
+                }
+                else if (tileChar[x] == '/')
+                {
+                    tilePos = new Vector3Int(x, -row, 0);
+                    tileType = TYPE.FLOOR;
+                    Instantiate(playerObj, (tilePos + tileObjOffset) - Vector3Int.forward, Quaternion.identity);
+                    tileToPlace = 1;
+                }
+                else if ((int)tileChar[x] >= 65 && (int)tileChar[x] <= 90) // Upercase is box
+                {
+                    tilePos = new Vector3Int(x, -row, 0);
+                    tileType = TYPE.BOX;
+                    tileoccupied = true;
+                    tileObjID = (int)tileChar[x] - 65;
+                    tileToPlace = 1;
+                }
+                else if ((int)tileChar[x] >= 97 && (int)tileChar[x] <= 122) // lowecase is destination
+                {
+                    tilePos = new Vector3Int(x, -row, 0);
+                    tileType = TYPE.OBJECTIVE;
+                    tileObjID = (int)tileChar[x] - 97;
+                    tileToPlace = 2;
+                }
+                else
+                {
+                    throw new Exception("Invalid character");
+                }
+                SwitchTile(tilePos, tileToPlace);
                 Tile newTile = new(tileID, tilePos, tileType, tileObjID, tileoccupied);
                 tiles.Add(newTile);
 
@@ -234,7 +216,6 @@ public class BoardManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Invalid movement");
                     return false;
                 }
             }
@@ -317,7 +298,7 @@ public class BoardManager : MonoBehaviour
         {
             Debug.LogWarning("Level Complete");
             Menu.instance.NewLevelComplete();
-            SceneManager.LoadScene(0);
+            SceneManager.UnloadSceneAsync(1);
         }
     }
 
