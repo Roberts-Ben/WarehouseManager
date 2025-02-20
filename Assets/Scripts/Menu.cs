@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System;
+using UnityEngine.TextCore.Text;
 
 public class Menu : MonoBehaviour
 {
@@ -13,6 +17,7 @@ public class Menu : MonoBehaviour
     public GameObject levelPanel;
 
     public GameObject[] levelButtonObjects;
+    public List<LevelID> levelIDs;
     public List<Button> levelButtons;
 
     public int levelsUnlocked;
@@ -22,30 +27,12 @@ public class Menu : MonoBehaviour
     {
         instance = this;
 
+        CheckPrefs();
+
         levelsUnlocked = PlayerPrefs.GetInt("levelsUnlocked", 1);
         levelsCompleted = PlayerPrefs.GetInt("levelsCompleted", 0);
 
-        levelButtonObjects = GameObject.FindGameObjectsWithTag("LevelButton");
-
-        foreach (GameObject go in levelButtonObjects)
-        {
-            Button newBtn = go.GetComponent<Button>();
-            levelButtons.Add(newBtn);
-            newBtn.interactable = false;
-        }
-
-        for (int i = 0; i <= levelButtons.Count; i++)
-        {
-            if(i < levelsUnlocked)
-            {
-                levelButtons[i].interactable = true;
-            }
-
-            if(i < levelsCompleted)
-            {
-                levelButtons[i].GetComponent<Image>().color = Color.green;
-            }
-        }
+        LoadAndSortLevels();
 
         optionsPanel.SetActive(false);
         levelPanel.SetActive(false);
@@ -77,6 +64,37 @@ public class Menu : MonoBehaviour
         levelPanel.SetActive(false);
     }
 
+    public void LoadAndSortLevels()
+    {
+        levelButtonObjects = GameObject.FindGameObjectsWithTag("LevelButton");
+        foreach (GameObject levelButtonObject in levelButtonObjects)
+        {
+            levelIDs.Add(levelButtonObject.GetComponent<LevelID>());
+        }
+
+        levelIDs = levelIDs.OrderBy(w => w.worldID).ThenBy(l => l.levelID).ToList();
+
+        foreach (LevelID level in levelIDs)
+        {
+            Button newBtn = level.gameObject.GetComponent<Button>();
+            levelButtons.Add(newBtn);
+            newBtn.interactable = false;
+        }
+
+        for (int i = 0; i <= levelButtons.Count; i++)
+        {
+            if (i < levelsUnlocked)
+            {
+                levelButtons[i].interactable = true;
+            }
+
+            if (i < levelsCompleted)
+            {
+                levelButtons[i].GetComponent<Image>().color = Color.green;
+            }
+        }
+    }
+
    public void LoadLevel(int level)
     {
         SceneManager.LoadScene(level);
@@ -89,6 +107,17 @@ public class Menu : MonoBehaviour
         SavePrefs();
     }
 
+    public void CheckPrefs()
+    {
+        if (!PlayerPrefs.HasKey("levelsUnlocked"))
+        {
+            PlayerPrefs.SetInt("levelsUnlocked", 1);
+        }
+        if (!PlayerPrefs.HasKey("levelsCompleted"))
+        {
+            PlayerPrefs.SetInt("levelsCompleted", 0);
+        }
+    }
     public void SavePrefs()
     {
         PlayerPrefs.SetInt("levelsUnlocked", levelsUnlocked);

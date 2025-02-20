@@ -3,6 +3,9 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TMPro;
+using System.IO;
+using System.Text;
+using System;
 
 public class BoardManager : MonoBehaviour
 {
@@ -15,10 +18,18 @@ public class BoardManager : MonoBehaviour
     public List<Objective> objectivePositions;
 
     public List<Sprite> tileSprites;
-    public TileBase floor;
+    public List<TileBase> tileBases;
+
+    public GameObject boxObjective;
+    public GameObject targetObjective;
+    public GameObject playerObj;
+
+    public List<Color> objectiveColours;
 
     private int tileID = 0;
     private int tileObjID = 0;
+    private Vector3Int tilePos = new();
+    private Vector3Int tileObjOffset = new(1,1,-1);
     private bool tileoccupied = false;
     private TYPE tileType;
 
@@ -37,92 +48,142 @@ public class BoardManager : MonoBehaviour
         tiles = new List<Tile>();
         objectivePositions = new List<Objective>();
 
+        GenerateMapFromFile();
         tilemap.CompressBounds(); // Clamp the tilemap, in case it was edited recently
 
         PopulateObjectives();
-        PopulateTiles();
     }
 
     public void PopulateObjectives()
     {
-        GameObject[] objectsWithTag = GameObject.FindGameObjectsWithTag("Objective");
-        foreach (GameObject go in objectsWithTag)
+        foreach (Tile tile in tiles)
         {
-            ObjectiveInfo objectiveInfo = go.GetComponent<ObjectiveInfo>();
+            GameObject objToSpawn = null;
+            bool isBox = false;
 
-            Vector3Int objectiveTile = tilemap.WorldToCell(go.transform.position);
-
-            Objective newObjective = new Objective(go, objectiveInfo.box, objectiveInfo.objectiveID, objectiveTile);
-            objectivePositions.Add(newObjective);
-            objectives.Add(go);
-
-            if(objectiveInfo.box)
+            if (tile.tileType == TYPE.BOX)
             {
+                objToSpawn = boxObjective;
+                isBox = true;
+                
                 totalObjectives++;
             }
+            else if (tile.tileType == TYPE.OBJECTIVE)
+            {
+                objToSpawn = targetObjective;
+                isBox = false;
+            }
+            if (objToSpawn != null)
+            {
+                GameObject go = Instantiate(objToSpawn, tile.position + tileObjOffset, Quaternion.identity);
+                go.GetComponent<ObjectiveInfo>().box = isBox;
+                go.GetComponent<ObjectiveInfo>().objectiveID = tile.GetObjID();
+                go.GetComponent<SpriteRenderer>().color = objectiveColours[tile.GetObjID()];
+
+                Objective newObjective = new(go, isBox, tile.GetObjID(), tile.GetPos());
+                objectivePositions.Add(newObjective);
+                objectives.Add(go);
+                go.transform.parent = GameObject.Find("Objectives").transform;
+            }
         }
     }
 
-    public void PopulateTiles()
+    public void GenerateMapFromFile()
     {
-        foreach (Vector3Int pos in tilemap.cellBounds.allPositionsWithin)
+        StreamReader reader = new(Application.dataPath + "/Resources/1-1.txt", Encoding.Default);
+
+        string line = reader.ReadLine();
+        string[] subs = line.Split('x');
+
+        int width = Int32.Parse(subs[0]);
+        int height = Int32.Parse(subs[1]);
+
+        int row = 0;
+
+        while (!reader.EndOfStream)
         {
-            if (tilemap.HasTile(pos))
+            line = reader.ReadLine();
+            if (width < line.Length)
+            {
+                width = line.Length;
+            }
+
+            char[] tileChar = line.ToCharArray();
+
+            for (int x = 0; x < line.Length; x++)
             {
                 tileoccupied = false;
-                Sprite tilemapSprite = tilemap.GetSprite(pos);
+                switch (tileChar[x])
+                {
+                    case '#': // Wall
+                        tilePos = new Vector3Int(x, -row, 0);
 
-                if (tilemapSprite == tileSprites[0]) // Wall
-                {
-                    tileType = TYPE.WALL;
-                }
-                else if (tilemapSprite == tileSprites[1]) // Floor
-                {
-                    tileType = TYPE.FLOOR;
-                }
-                else if (tilemapSprite == tileSprites[2]) // Objective
-                {
-                    tileType = TYPE.OBJECTIVE;
+                        tileType = TYPE.WALL;
 
-                    tileObjID = FindObjective(pos);
+                        SwitchTile(tilePos, 0);
+                        break;
+                    case '0': // Walkable
+                        tilePos = new Vector3Int(x, -row, 0);
 
-                    SwitchTile(pos);
-                }
-                else if (tilemapSprite == tileSprites[3]) // Box
-                {
-                    tileType = TYPE.BOX;
-                    tileoccupied = true;
+                        tileType = TYPE.FLOOR;
 
-                    tileObjID = FindObjective(pos);
+                        SwitchTile(tilePos, 1);
+                        break;
+                    case 'P': // Player spawn
+                        tilePos = new Vector3Int(x, -row, 0);
 
-                    SwitchTile(pos);
+                        tileType = TYPE.FLOOR;
+
+                        GameObject player = Instantiate(playerObj, (tilePos + tileObjOffset) - Vector3Int.forward, Quaternion.identity);
+
+                        SwitchTile(tilePos, 1);
+                        break;
+                    case 'A': // Objective A spawn
+                        tilePos = new Vector3Int(x, -row, 0);
+
+                        tileType = TYPE.BOX;
+                        tileoccupied = true;
+                        tileObjID = 1;
+
+                        SwitchTile(tilePos, 1);
+                        break;
+                    case 'a': // Objective A target
+                        tilePos = new Vector3Int(x, -row, 0);
+
+                        tileType = TYPE.OBJECTIVE;
+                        tileObjID = 1;
+
+                        SwitchTile(tilePos, 2);
+                        break;
+                    case 'B': // Objective B spawn
+                        tilePos = new Vector3Int(x, -row, 0);
+
+                        tileType = TYPE.BOX;
+                        tileoccupied = true;
+                        tileObjID = 2;
+
+                        SwitchTile(tilePos, 1);
+                        break;
+                    case 'b': // Objective B target
+                        tilePos = new Vector3Int(x, -row, 0);
+
+                        tileType = TYPE.OBJECTIVE;
+                        tileObjID = 2;
+
+                        SwitchTile(tilePos, 2);
+                        break;
+                    default:
+                        break;
                 }
-                else if (tilemapSprite == tileSprites[4]) // Player
-                {
-                    SwitchTile(pos);
-                }
-                else
-                {
-                    Debug.LogError("Invalid Sprite");
-                }
+                Tile newTile = new(tileID, tilePos, tileType, tileObjID, tileoccupied);
+                tiles.Add(newTile);
+
+                tileID++;
             }
-            Tile newTile = new Tile(tileID, pos, tileType, tileObjID, tileoccupied);
-            tiles.Add(newTile);
-
-            tileID++;
+            row++;
         }
-    }
-
-    public int FindObjective(Vector3 pos)
-    {
-        foreach (Objective o in objectivePositions)
-        {
-            if (o.position == pos)
-            {
-                return o.objectiveID;
-            }
-        }
-        return 0;
+        Camera.main.transform.position = new Vector3(width/2, -height/2,-11);
+        Camera.main.orthographicSize = height > width ? height : width;
     }
 
     public GameObject FindObjectiveObj(Vector3 pos)
@@ -137,25 +198,21 @@ public class BoardManager : MonoBehaviour
         return null;
     }
 
-    public void SwitchTile(Vector3Int pos)
+    public void SwitchTile(Vector3Int pos, int tileIndex)
     {
-        tilemap.SetTile(pos, floor);
+        tilemap.SetTile(pos, tileBases[tileIndex]);
     }
 
     public bool GetTile(Vector3 pos, Vector3 targetPos, Vector3 direction)
     {
-        //Vector3Int currentTile = tilemap.WorldToCell(pos);
         Vector3Int targetTile = tilemap.WorldToCell(targetPos);
 
         foreach (Tile t in tiles)
         {
             if(t.GetPos() == targetTile)
             {
-                //Debug.Log("Found Tile: " + targetTile);
                 if (t.GetOccupied())
                 {
-                    //Debug.Log("There is a box here");  
-
                     bool canMoveBox = GetNextTile(targetPos, targetPos + direction, direction);
 
                     if (canMoveBox)
@@ -171,7 +228,6 @@ public class BoardManager : MonoBehaviour
                 }
                 else if (t.GetTileType() != TYPE.WALL)
                 {
-                    //Debug.Log("Floor Tile. Moving to: " + tilemap.GetCellCenterWorld(targetTile));
                     moves++;
                     UpdateMoves();
                     return true;
@@ -198,7 +254,6 @@ public class BoardManager : MonoBehaviour
         {
             if (t.GetPos() == targetTile)
             {
-                //Debug.Log("Found Next Tile: " + targetTile);
                 if (t.GetOccupied() || t.GetTileType() == TYPE.WALL)
                 {
                     return false;
@@ -206,11 +261,10 @@ public class BoardManager : MonoBehaviour
                 else 
                 {
                     box.transform.position += direction;
-                    //Debug.Log("Box moving");
 
                     foreach (Objective o in objectivePositions)
                     {
-                        if (o.position == currentTile)
+                        if (o.position == currentTile && o.box)
                         {
                             o.position = targetTile;
                         }
@@ -249,14 +303,11 @@ public class BoardManager : MonoBehaviour
                 Vector3Int currentTile = tilemap.WorldToCell(go.transform.position);
                 int ID = info.objectiveID;
 
-                foreach(Objective o in objectivePositions)
+                foreach (Objective o in objectivePositions)
                 {
-                    if(currentTile == o.position && !o.GetBox()) // If the box is on an objective space
+                    if(!o.GetBox() && currentTile == o.position && o.objectiveID == ID) // If the box is on an objective space
                     {
-                        if(o.objectiveID == ID)
-                        {
-                            objectivesMet++;
-                        }
+                        objectivesMet++;
                     }
                 }
             }
@@ -264,7 +315,7 @@ public class BoardManager : MonoBehaviour
 
         if(objectivesMet == totalObjectives)
         {
-            Debug.LogError("Level Complete");
+            Debug.LogWarning("Level Complete");
             Menu.instance.NewLevelComplete();
             SceneManager.LoadScene(0);
         }
