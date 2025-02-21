@@ -30,6 +30,14 @@ public class Menu : MonoBehaviour
     public string levelJSON;
     public List<LevelSaveData> levelSaveData;
 
+    public GameObject audioButton;
+    public List<Sprite> audioSprites;
+    public bool audioEnabled;
+
+    public GameObject menuCamera;
+    public GameObject gameCamera;
+    public GameObject backgroundMap;
+
     public void Awake()
     {
         if(instance == null)
@@ -41,8 +49,6 @@ public class Menu : MonoBehaviour
 
         optionsPanel.SetActive(false);
         levelPanel.SetActive(false);
-
-        //SavePrefs();
     }
 
     private void Update()
@@ -114,6 +120,7 @@ public class Menu : MonoBehaviour
         canvas.SetActive(false);
 
         SceneManager.LoadScene("Level", LoadSceneMode.Additive);
+        backgroundMap.SetActive(false);
     }
     public void NewLevelComplete()
     {
@@ -146,11 +153,20 @@ public class Menu : MonoBehaviour
         }
         SavePrefs();
     }
+
+    public void ToggleAudio()
+    {
+        audioEnabled = !audioEnabled;
+        audioButton.GetComponent<Image>().sprite = audioSprites[audioEnabled ? 1 : 0];
+
+    }
     public void LoadPrefs()
     {
         Debug.Log("Loading prefs");
         string str = File.ReadAllText(Application.dataPath + "/Data/LevelData.json");
         levelSaveData = JsonConvert.DeserializeObject<List<LevelSaveData>>(str);
+
+        audioButton.GetComponent<Image>().sprite = audioSprites[audioEnabled ? 1 : 0];
     }
     public void SavePrefs()
     {

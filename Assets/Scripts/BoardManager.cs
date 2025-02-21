@@ -6,6 +6,7 @@ using TMPro;
 using System.IO;
 using System.Text;
 using System;
+using UnityEngine.Analytics;
 
 public class BoardManager : MonoBehaviour
 {
@@ -16,7 +17,9 @@ public class BoardManager : MonoBehaviour
     public List<Tile> tiles;
     public List<GameObject> objectives;
     public List<Objective> objectivePositions;
-    public List<TileBase> tileBases;
+    public List<TileBase> floorTileBases;
+    public List<TileBase> wallTileBases;
+    public List<TileBase> objectiveTileBases;
 
     public GameObject boxObjective;
     public GameObject targetObjective;
@@ -122,20 +125,20 @@ public class BoardManager : MonoBehaviour
                 {
                     tilePos = new Vector3Int(x, -row, 0);
                     tileType = TYPE.WALL;
-                    tileToPlace = 0;
+                    tileToPlace = UnityEngine.Random.Range(0,wallTileBases.Count);
                 }
                 else if (tileChar[x] == '0')
                 {
                     tilePos = new Vector3Int(x, -row, 0);
                     tileType = TYPE.FLOOR;
-                    tileToPlace = 1;
+                    tileToPlace = UnityEngine.Random.Range(0, floorTileBases.Count);
                 }
                 else if (tileChar[x] == '/')
                 {
                     tilePos = new Vector3Int(x, -row, 0);
                     tileType = TYPE.FLOOR;
                     Instantiate(playerObj, (tilePos + tileObjOffset) - Vector3Int.forward, Quaternion.identity);
-                    tileToPlace = 1;
+                    tileToPlace = UnityEngine.Random.Range(0, floorTileBases.Count);
                 }
                 else if ((int)tileChar[x] >= 65 && (int)tileChar[x] <= 90) // Upercase is box
                 {
@@ -143,20 +146,20 @@ public class BoardManager : MonoBehaviour
                     tileType = TYPE.BOX;
                     tileoccupied = true;
                     tileObjID = (int)tileChar[x] - 65;
-                    tileToPlace = 1;
+                    tileToPlace = UnityEngine.Random.Range(0, floorTileBases.Count);
                 }
                 else if ((int)tileChar[x] >= 97 && (int)tileChar[x] <= 122) // lowecase is destination
                 {
                     tilePos = new Vector3Int(x, -row, 0);
                     tileType = TYPE.OBJECTIVE;
                     tileObjID = (int)tileChar[x] - 97;
-                    tileToPlace = 2;
+                    tileToPlace = 0;
                 }
                 else
                 {
                     throw new Exception("Invalid character");
                 }
-                SwitchTile(tilePos, tileToPlace);
+                SwitchTile(tilePos, tileType, tileToPlace);
                 Tile newTile = new(tileID, tilePos, tileType, tileObjID, tileoccupied);
                 tiles.Add(newTile);
 
@@ -164,8 +167,14 @@ public class BoardManager : MonoBehaviour
             }
             row++;
         }
-        Camera.main.transform.position = new Vector3(width/2, -height/2,-11);
-        Camera.main.orthographicSize = height > width ? height : width;
+        GameObject menuCam = Menu.instance.menuCamera;
+        GameObject gameCam = Menu.instance.gameCamera;
+
+        gameCam.transform.position = new Vector3(width / 2 + 1, -height / 2 + 2,-11);
+        gameCam.GetComponent<Camera>().orthographicSize = width / 2 + 1;
+        //gameCam.GetComponent<Camera>().orthographicSize = height > width ? height : width;
+        menuCam.SetActive(false);
+        gameCam.SetActive(true);
     }
 
     public GameObject FindObjectiveObj(Vector3 pos)
@@ -180,9 +189,25 @@ public class BoardManager : MonoBehaviour
         return null;
     }
 
-    public void SwitchTile(Vector3Int pos, int tileIndex)
+    public void SwitchTile(Vector3Int pos, TYPE tile,  int tileIndex)
     {
-        tilemap.SetTile(pos, tileBases[tileIndex]);
+        switch (tile)
+        {
+            case TYPE.WALL:
+                tilemap.SetTile(pos, wallTileBases[tileIndex]);
+                break;
+            case TYPE.FLOOR:
+                tilemap.SetTile(pos, floorTileBases[tileIndex]);
+                break;
+            case TYPE.BOX:
+                tilemap.SetTile(pos, floorTileBases[tileIndex]);
+                break;
+            case TYPE.OBJECTIVE:
+                tilemap.SetTile(pos, objectiveTileBases[tileIndex]);
+                break;
+            default:
+                break;
+        }
     }
 
     public bool GetTile(Vector3 pos, Vector3 targetPos, Vector3 direction)
