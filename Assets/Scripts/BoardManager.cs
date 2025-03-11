@@ -6,7 +6,6 @@ using TMPro;
 using System.IO;
 using System.Text;
 using System;
-using UnityEngine.Analytics;
 
 public class BoardManager : MonoBehaviour
 {
@@ -67,26 +66,32 @@ public class BoardManager : MonoBehaviour
             GameObject objToSpawn = null;
             bool isBox = false;
 
-            if (tile.tileType == TYPE.BOX)
+            if (tile.TileType == TYPE.BOX)
             {
                 objToSpawn = boxObjective;
                 isBox = true;
                 
                 totalObjectives++;
             }
-            else if (tile.tileType == TYPE.OBJECTIVE)
+            else if (tile.TileType == TYPE.OBJECTIVE)
             {
                 objToSpawn = targetObjective;
                 isBox = false;
             }
             if (objToSpawn != null)
             {
-                GameObject go = Instantiate(objToSpawn, tile.position + tileObjOffset, Quaternion.identity);
+                GameObject go = Instantiate(objToSpawn, tile.Position + tileObjOffset, Quaternion.identity);
                 go.GetComponent<ObjectiveInfo>().box = isBox;
-                go.GetComponent<ObjectiveInfo>().objectiveID = tile.GetObjID();
-                go.GetComponent<SpriteRenderer>().color = objectiveColours[tile.GetObjID()];
+                go.GetComponent<ObjectiveInfo>().objectiveID = tile.ObjectiveID;
+                go.GetComponent<SpriteRenderer>().color = objectiveColours[tile.ObjectiveID];
 
-                Objective newObjective = new(go, isBox, tile.GetObjID(), tile.GetPos());
+                Objective newObjective = new()
+                {
+                    ObjectiveObj = go,
+                    IsBox = isBox,
+                    ObjectiveID = tile.ObjectiveID,
+                    Position = tile.Position
+                };
                 objectivePositions.Add(newObjective);
                 objectives.Add(go);
                 go.transform.parent = GameObject.Find("Objectives").transform;
@@ -137,7 +142,8 @@ public class BoardManager : MonoBehaviour
                 {
                     tilePos = new Vector3Int(x, -row, 0);
                     tileType = TYPE.FLOOR;
-                    Instantiate(playerObj, (tilePos + tileObjOffset) - Vector3Int.forward, Quaternion.identity);
+                    GameObject player =  Instantiate(playerObj, (tilePos + tileObjOffset) - Vector3Int.forward, Quaternion.identity);
+                    player.transform.parent = transform;
                     tileToPlace = UnityEngine.Random.Range(0, floorTileBases.Count);
                 }
                 else if ((int)tileChar[x] >= 65 && (int)tileChar[x] <= 90) // Upercase is box
@@ -160,7 +166,14 @@ public class BoardManager : MonoBehaviour
                     throw new Exception("Invalid character");
                 }
                 SwitchTile(tilePos, tileType, tileToPlace);
-                Tile newTile = new(tileID, tilePos, tileType, tileObjID, tileoccupied);
+                Tile newTile = new()
+                {
+                    ID = tileID,
+                    Position = tilePos,
+                    TileType = tileType,
+                    ObjectiveID = tileObjID,
+                    Occupied = tileoccupied
+                };
                 tiles.Add(newTile);
 
                 tileID++;
@@ -172,7 +185,6 @@ public class BoardManager : MonoBehaviour
 
         gameCam.transform.position = new Vector3(width / 2 + 1, -height / 2 + 2,-11);
         gameCam.GetComponent<Camera>().orthographicSize = width / 2 + 1;
-        //gameCam.GetComponent<Camera>().orthographicSize = height > width ? height : width;
         menuCam.SetActive(false);
         gameCam.SetActive(true);
     }
@@ -181,9 +193,9 @@ public class BoardManager : MonoBehaviour
     {
         foreach (Objective o in objectivePositions)
         {
-            if (o.position == pos && o.GetBox())
+            if (o.Position == pos && o.IsBox)
             {
-                return o.GetObj();
+                return o.ObjectiveObj;
             }
         }
         return null;
@@ -216,9 +228,9 @@ public class BoardManager : MonoBehaviour
 
         foreach (Tile t in tiles)
         {
-            if(t.GetPos() == targetTile)
+            if(t.Position == targetTile)
             {
-                if (t.GetOccupied())
+                if (t.Occupied)
                 {
                     bool canMoveBox = GetNextTile(targetPos, targetPos + direction, direction);
 
@@ -233,7 +245,7 @@ public class BoardManager : MonoBehaviour
                         return false;
                     }
                 }
-                else if (t.GetTileType() != TYPE.WALL)
+                else if (t.TileType != TYPE.WALL)
                 {
                     moves++;
                     UpdateMoves();
@@ -258,9 +270,9 @@ public class BoardManager : MonoBehaviour
 
         foreach (Tile t in tiles)
         {
-            if (t.GetPos() == targetTile)
+            if (t.Position == targetTile)
             {
-                if (t.GetOccupied() || t.GetTileType() == TYPE.WALL)
+                if (t.Occupied || t.TileType == TYPE.WALL)
                 {
                     return false;
                 }
@@ -270,22 +282,22 @@ public class BoardManager : MonoBehaviour
 
                     foreach (Objective o in objectivePositions)
                     {
-                        if (o.position == currentTile && o.box)
+                        if (o.Position == currentTile && o.IsBox)
                         {
-                            o.position = targetTile;
+                            o.Position = targetTile;
                         }
                     }
 
                     foreach (Tile thisTile in tiles)
                     {
-                        if (thisTile.GetPos() == currentTile)
+                        if (thisTile.Position == currentTile)
                         {
-                            tiles[thisTile.GetID()].SetOccupied(false);
+                            tiles[thisTile.ID].Occupied = false;
                             break;
                         }
                     }
 
-                    tiles[t.GetID()].SetOccupied(true);
+                    tiles[t.ID].Occupied = true;
                    
                     return true;
                 }
@@ -311,7 +323,7 @@ public class BoardManager : MonoBehaviour
 
                 foreach (Objective o in objectivePositions)
                 {
-                    if(!o.GetBox() && currentTile == o.position && o.objectiveID == ID) // If the box is on an objective space
+                    if(!o.IsBox && currentTile == o.Position && o.ObjectiveID == ID) // If the box is on an objective space
                     {
                         objectivesMet++;
                     }

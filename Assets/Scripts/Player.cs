@@ -2,6 +2,7 @@
 
 public class Player : MonoBehaviour
 {
+    public Vector3 gridPos;
     public Vector3 direction;
     private bool hasmoved = true;
 
@@ -23,6 +24,11 @@ public class Player : MonoBehaviour
         {
             if (direction.x != 0 || direction.y != 0)
             {
+                gridPos = new Vector3(
+                    Mathf.RoundToInt(transform.position.x),
+                    Mathf.RoundToInt(transform.position.y),
+                    0
+                );
                 Move();
                 hasmoved = false;
             }
@@ -31,11 +37,7 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        bool validmove = false;
-
-        validmove = BoardManager.instance.GetTile(transform.position, transform.position + direction, direction); // Check wether the target tile is free/valid
-
-        if(validmove)
+        if (BoardManager.instance.GetTile(gridPos, gridPos + direction, direction))
         {
             transform.position += direction;
             BoardManager.instance.CheckObjectives();
