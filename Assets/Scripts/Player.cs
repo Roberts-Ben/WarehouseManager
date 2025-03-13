@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
 
     void Move()
     {
-        if (BoardManager.instance.GetTile(gridPos, gridPos + direction, direction))
+        if (BoardManager.instance.GetTile(gridPos + direction, direction))
         {
             transform.position += direction;
             BoardManager.instance.CheckObjectives();

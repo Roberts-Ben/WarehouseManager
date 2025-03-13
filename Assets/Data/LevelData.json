@@ -1,7 +1,7 @@
 [
   {
     "levelID": 1,
-    "levelUnlocked": false,
+    "levelUnlocked": true,
     "levelCompleted": false
   },
   {
@@ -16,12 +16,12 @@
   },
   {
     "levelID": 4,
-    "levelUnlocked": true,
-    "levelCompleted": true
+    "levelUnlocked": false,
+    "levelCompleted": false
   },
   {
     "levelID": 5,
-    "levelUnlocked": true,
+    "levelUnlocked": false,
     "levelCompleted": false
   },
   {

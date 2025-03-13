@@ -222,7 +222,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public bool GetTile(Vector3 pos, Vector3 targetPos, Vector3 direction)
+    public bool GetTile(Vector3 targetPos, Vector3 direction)
     {
         Vector3Int targetTile = tilemap.WorldToCell(targetPos);
 
@@ -334,7 +334,7 @@ public class BoardManager : MonoBehaviour
         if(objectivesMet == totalObjectives)
         {
             Debug.LogWarning("Level Complete");
-            Menu.instance.NewLevelComplete();
+            Menu.instance.LevelComplete();
             SceneManager.UnloadSceneAsync(1);
         }
     }

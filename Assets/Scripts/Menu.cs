@@ -6,26 +6,26 @@ using System;
 using System.IO;
 using UnityEngine.UI;
 using Newtonsoft.Json;
-using UnityEngine.Analytics;
+using TMPro;
 
 public class Menu : MonoBehaviour
 {
     static public Menu instance;
 
+    public GameObject canvas;
     public GameObject mainPanel;
     public GameObject optionsPanel;
     public GameObject levelPanel;
+    public InfoPopup popupHandler;
 
     public GameObject[] levelButtonObjects;
     public List<LevelInfo> levelInfos;
-    public List<Button> levelButtons;
 
     public string levelFile;
     public int selectedLevel;
 
-    private string dataPath = Application.dataPath + "/Data/LevelData.json";
-
-    public GameObject canvas;
+    private readonly string dataPath = Application.dataPath + "/Data/LevelData.json";
+    private readonly string settingsPath = Application.dataPath + "/Data/SettingsData.json";
 
     public List<LevelSaveData> levelSaveData;
 
@@ -44,24 +44,15 @@ public class Menu : MonoBehaviour
             instance = this;
         }
 
-        LoadAndSortLevels();
-
         optionsPanel.SetActive(false);
         levelPanel.SetActive(false);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            ResetPrefs();
-            LoadAndSortLevels();
-        }
-    }
     public void Play()
     {
         mainPanel.SetActive(false);
         levelPanel.SetActive(true);
+        LoadAndSortLevels();
     }
     public void Options()
     {
@@ -79,11 +70,40 @@ public class Menu : MonoBehaviour
         mainPanel.SetActive(true);
         optionsPanel.SetActive(false);
         levelPanel.SetActive(false);
+        popupHandler.ClosePopup();
+    }
+
+    public void HowToPlayButton()
+    {
+        popupHandler.DisplayPopup(POPUPTYPE.HOWTOPLAY);
+    }
+    public void ResetDataButton()
+    {
+        popupHandler.DisplayPopup(POPUPTYPE.CONFIRMDATARESET);
+    }
+
+    public void ResetProgress()
+    {
+        Debug.LogWarning("Resetting prefs");
+        foreach (LevelInfo levelInfo in levelInfos)
+        {
+            if (levelInfo.WorldID == 1 && levelInfo.LevelID == 1)
+            {
+                Debug.Log("Resetting level 1");
+                levelInfo.LevelUnlocked = true;
+                levelInfo.LevelCompleted = false;
+            }
+            else
+            {
+                levelInfo.LevelUnlocked = false;
+                levelInfo.LevelCompleted = false;
+            }
+        }
+        SavePrefs();
     }
 
     public void LoadAndSortLevels()
     {
-        levelButtons.Clear();
         levelInfos.Clear();
 
         levelButtonObjects = GameObject.FindGameObjectsWithTag("LevelButton");
@@ -105,47 +125,36 @@ public class Menu : MonoBehaviour
 
         for(int i = 0; i < levelSaveData.Count(); i++)
         {
-            Button newBtn = levelInfos[i].gameObject.GetComponent<Button>();
+            Button newBtn = levelInfos[i].GetComponent<Button>();
+            TMP_Text levelText = newBtn.GetComponentInChildren<TMP_Text>();
             Image[] levelCompleteImage = newBtn.GetComponentsInChildren<Image>();
-            levelButtons.Add(newBtn);
-
-            if (levelSaveData[i].levelUnlocked)
-            {
-                newBtn.interactable = true;
-            }
-            else
-            {
-                newBtn.interactable = false;
-            }
-            if (levelSaveData[i].levelCompleted)
-            {
-                Debug.Log("Level: " + levelSaveData[i].levelID + " completed");
-                levelInfos[i].CompletedImage = levelCompleteImage[1];
-                levelInfos[i].CompletedImage.color = Color.green;
-            }
+            
+            newBtn.interactable = levelSaveData[i].levelUnlocked;
+            levelCompleteImage[1].enabled = levelSaveData[i].levelCompleted;
+            levelText.enabled = !levelSaveData[i].levelCompleted;
         }
     }
 
    public void LoadLevel(LevelInfo levelInfo)
     {
         levelFile = levelInfo.WorldID + "-" + levelInfo.LevelID;
-        selectedLevel = levelInfo.WorldID * levelInfo.LevelID;
+        selectedLevel = (levelInfo.WorldID * levelInfo.LevelID) - 1;
         canvas.SetActive(false);
 
         SceneManager.LoadScene("Level", LoadSceneMode.Additive);
         backgroundMap.SetActive(false);
     }
-    public void NewLevelComplete()
+    public void LevelComplete()
     {
         backgroundMap.SetActive(true);
         menuCamera.SetActive(true);
         gameCamera.SetActive(false);
 
-        if (!levelInfos[selectedLevel - 1].LevelCompleted)
+        if (!levelInfos[selectedLevel].LevelCompleted)
         {
-            levelInfos[selectedLevel - 1].LevelCompleted = true;
-            levelInfos[selectedLevel - 1].LevelUnlocked = true;
+            levelInfos[selectedLevel].LevelCompleted = true;
             levelInfos[selectedLevel].LevelUnlocked = true;
+            levelInfos[selectedLevel + 1].LevelUnlocked = true;
         }
         SavePrefs();
         canvas.SetActive(true);
@@ -155,7 +164,7 @@ public class Menu : MonoBehaviour
     public void ToggleAudio()
     {
         audioEnabled = !audioEnabled;
-        audioButton.GetComponent<Image>().sprite = audioSprites[audioEnabled ? 1 : 0];
+        audioButton.GetComponent<Image>().sprite = audioSprites[audioEnabled ? 0 : 1];
 
     }
     public void LoadPrefs()
@@ -165,20 +174,26 @@ public class Menu : MonoBehaviour
         {
             string str = File.ReadAllText(dataPath);
             levelSaveData = JsonConvert.DeserializeObject<List<LevelSaveData>>(str);
+
+            for(int i = 0; i < levelInfos.Count; i++)
+            {
+                levelInfos[i].LevelUnlocked = levelSaveData[i].levelUnlocked;
+                levelInfos[i].LevelCompleted = levelSaveData[i].levelCompleted;
+            }
         }
         else
         {
             InitPrefs();
         }
 
-        audioButton.GetComponent<Image>().sprite = audioSprites[audioEnabled ? 1 : 0];
+        audioButton.GetComponent<Image>().sprite = audioSprites[audioEnabled ? 0 : 1];
     }
 
     public void InitPrefs()
     {
         Debug.Log("Prefs not found");
         levelSaveData.Clear();
-        ResetPrefs();
+        ResetProgress();
         foreach (LevelInfo levelInfo in levelInfos)
         {
             LevelSaveData levelData = new()
@@ -192,24 +207,7 @@ public class Menu : MonoBehaviour
         string json = JsonConvert.SerializeObject(levelSaveData, Formatting.Indented);
         File.WriteAllText(dataPath, json);
     }
-    public void ResetPrefs()
-    {
-        Debug.LogWarning("Resetting prefs");
-        foreach (LevelInfo levelInfo in levelInfos)
-        {
-            if (levelInfo.WorldID == 1 && levelInfo.LevelID == 1)
-            {
-                Debug.Log("Resetting level 1");
-                levelInfo.LevelUnlocked = true;
-                levelInfo.LevelCompleted = false;
-            }
-            else
-            {
-                levelInfo.LevelUnlocked = false;
-                levelInfo.LevelCompleted = false;
-            }
-        }
-    }
+
     public void SavePrefs()
     {
         Debug.Log("saving prefs");
