@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
 using System.IO;
@@ -24,6 +25,7 @@ public class BoardManager : MonoBehaviour
     public GameObject targetObjective;
     public GameObject playerObj;
 
+    public List<Sprite> objectiveSprites;
     public List<Color> objectiveColours;
 
     private int tileID = 0;
@@ -81,9 +83,19 @@ public class BoardManager : MonoBehaviour
             if (objToSpawn != null)
             {
                 GameObject go = Instantiate(objToSpawn, tile.Position + tileObjOffset, Quaternion.identity);
-                go.GetComponent<ObjectiveInfo>().box = isBox;
-                go.GetComponent<ObjectiveInfo>().objectiveID = tile.ObjectiveID;
-                go.GetComponent<SpriteRenderer>().color = objectiveColours[tile.ObjectiveID];
+                ObjectiveInfo info = go.GetComponent<ObjectiveInfo>();
+                SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
+                info.box = isBox;
+                info.objectiveID = tile.ObjectiveID;
+
+                if(isBox)
+                {
+                    spriteRenderer.sprite = objectiveSprites[tile.ObjectiveID];
+                }
+                else
+                {
+                    spriteRenderer.color = objectiveColours[tile.ObjectiveID];
+                }
 
                 Objective newObjective = new()
                 {
@@ -103,13 +115,16 @@ public class BoardManager : MonoBehaviour
     {
         StreamReader reader = new(Application.dataPath + "/Resources/" + Menu.instance.levelFile + ".txt", Encoding.Default);
 
-        string line = reader.ReadLine();
+        string line = reader.ReadLine(); // Get the grid size here
         string[] subs = line.Split('x');
 
         int width = Int32.Parse(subs[0]);
         int height = Int32.Parse(subs[1]);
 
         int row = 0;
+
+        line = reader.ReadLine(); // Get the required moves for each rating
+        Menu.instance.levelInfos[Menu.instance.selectedLevel].LevelRatings = Array.ConvertAll(line.Split(' '), int.Parse);
 
         while (!reader.EndOfStream)
         {
@@ -334,7 +349,7 @@ public class BoardManager : MonoBehaviour
         if(objectivesMet == totalObjectives)
         {
             Debug.LogWarning("Level Complete");
-            Menu.instance.LevelComplete();
+            Menu.instance.LevelComplete(moves);
             SceneManager.UnloadSceneAsync(1);
         }
     }

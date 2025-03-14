@@ -7,6 +7,7 @@ using System.IO;
 using UnityEngine.UI;
 using Newtonsoft.Json;
 using TMPro;
+using DG.Tweening;
 
 public class Menu : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class Menu : MonoBehaviour
     public GameObject optionsPanel;
     public GameObject levelPanel;
     public InfoPopup popupHandler;
+
+    public List<Transform> worlds = new();
+    private int currentWorld = 1;
 
     public GameObject[] levelButtonObjects;
     public List<LevelInfo> levelInfos;
@@ -31,6 +35,7 @@ public class Menu : MonoBehaviour
 
     public GameObject audioButton;
     public List<Sprite> audioSprites;
+    public List<Sprite> ratingSprites;
     public bool audioEnabled;
 
     public GameObject menuCamera;
@@ -117,6 +122,9 @@ public class Menu : MonoBehaviour
 
             levelInfo.WorldID = IDs[0];
             levelInfo.LevelID = IDs[1];
+
+            Image[] childImages = levelButtonObject.GetComponentsInChildren<Image>();
+            levelInfo.RatingImages = new Image[] { childImages[2], childImages[3], childImages[4] };
         }
 
         levelInfos = levelInfos.OrderBy(w => w.WorldID).ThenBy(l => l.LevelID).ToList();
@@ -126,12 +134,51 @@ public class Menu : MonoBehaviour
         for(int i = 0; i < levelSaveData.Count(); i++)
         {
             Button newBtn = levelInfos[i].GetComponent<Button>();
-            TMP_Text levelText = newBtn.GetComponentInChildren<TMP_Text>();
-            Image[] levelCompleteImage = newBtn.GetComponentsInChildren<Image>();
+            Image[] levelRatingImages = levelInfos[i].RatingImages;
             
             newBtn.interactable = levelSaveData[i].levelUnlocked;
-            levelCompleteImage[1].enabled = levelSaveData[i].levelCompleted;
-            levelText.enabled = !levelSaveData[i].levelCompleted;
+
+            for(int o = 0; o < levelRatingImages.Length; o++)
+            {
+                if(levelSaveData[i].bestRating > o)
+                {
+                    levelRatingImages[o].sprite = ratingSprites[0];
+                }
+                else
+                {
+                    levelRatingImages[o].sprite = ratingSprites[1];
+                }
+                
+            }
+        }
+    }
+
+    public void SelectWorld(bool moveRight)
+    {
+        if (moveRight)
+        {
+            if(currentWorld < worlds.Count)
+            {
+                // Animate panels
+                worlds[currentWorld - 1].DOLocalMoveX(-1600, 1, true);  
+                worlds[currentWorld].DOLocalMoveX(0, 1, true);
+
+                foreach (LevelInfo levelInfo in levelInfos)
+                {
+
+                }
+
+                currentWorld++;
+            }
+        }
+        else
+        {
+            if(currentWorld > 1)
+            {
+                worlds[currentWorld - 1].DOLocalMoveX(1600, 1, true);
+                worlds[currentWorld - 2].DOLocalMoveX(0, 1, true);
+                currentWorld--;
+            }
         }
     }
 
@@ -144,18 +191,30 @@ public class Menu : MonoBehaviour
         SceneManager.LoadScene("Level", LoadSceneMode.Additive);
         backgroundMap.SetActive(false);
     }
-    public void LevelComplete()
+    public void LevelComplete(int moves)
     {
         backgroundMap.SetActive(true);
         menuCamera.SetActive(true);
         gameCamera.SetActive(false);
 
-        if (!levelInfos[selectedLevel].LevelCompleted)
+        LevelInfo levelInfo = levelInfos[selectedLevel];
+
+        if (!levelInfo.LevelCompleted)
         {
-            levelInfos[selectedLevel].LevelCompleted = true;
-            levelInfos[selectedLevel].LevelUnlocked = true;
+            levelInfo.LevelCompleted = true;
+            levelInfo.LevelUnlocked = true;
             levelInfos[selectedLevel + 1].LevelUnlocked = true;
         }
+
+        for (int i = 0; i < levelInfo.LevelRatings.Length; i++)
+        {
+            if(moves <= levelInfo.LevelRatings[i]) // TODO: Ensure we don't updae the score if it's worse
+            {
+                // bronze, silver, gold
+                levelInfo.BestRating = i + 1;
+            }
+        }
+
         SavePrefs();
         canvas.SetActive(true);
         LoadAndSortLevels();
@@ -217,6 +276,7 @@ public class Menu : MonoBehaviour
             levelSaveData[i].levelID = (10 * (levelInfos[i].WorldID - 1)) + levelInfos[i].LevelID;
             levelSaveData[i].levelUnlocked = levelInfos[i].LevelUnlocked;
             levelSaveData[i].levelCompleted = levelInfos[i].LevelCompleted;
+            levelSaveData[i].bestRating = levelInfos[i].BestRating;
         }
 
         string json = JsonConvert.SerializeObject(levelSaveData, Formatting.Indented);
@@ -230,4 +290,5 @@ public class LevelSaveData
     [SerializeField] public int levelID;
     [SerializeField] public bool levelUnlocked;
     [SerializeField] public bool levelCompleted;
+    [SerializeField] public int bestRating;
 }

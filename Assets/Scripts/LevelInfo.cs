@@ -7,5 +7,7 @@ public class LevelInfo : MonoBehaviour
     public int LevelID { get; set; }
     public bool LevelUnlocked { get; set; }
     public bool LevelCompleted { get; set; }
-    public Image CompletedImage { get; set; }
+    public int[] LevelRatings { get; set; }
+    public int BestRating { get; set; }
+    public Image[] RatingImages { get; set; }
 }

@@ -507,15 +507,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 210dda0ef32d52f4b8c38a2c3232651e, type: 2}
   objectiveTileBases:
   - {fileID: 11400000, guid: e33ba402a552e4e4ea344f3cb1ae6c0a, type: 2}
-  boxObjective: {fileID: 909994873003357636, guid: 6664c6659f450f544835b4815ec8230e,
+  boxObjective: {fileID: 1992257826165732, guid: b4692a41178172a4bbe59934241eab59,
     type: 3}
-  targetObjective: {fileID: 4080775411543860431, guid: 8d63f36e14ceb114da15c6689e03e6c5,
+  targetObjective: {fileID: 1094150815242094, guid: 72665c8c2ea9fb54bb3d9974a54c48db,
     type: 3}
   playerObj: {fileID: 1528915638184230, guid: 8e0f285c21cdcf14e8d5c06c57ba936b, type: 3}
+  objectiveSprites:
+  - {fileID: 21300000, guid: 5b767bd9e4881b2469a15614bb03e5e4, type: 3}
+  - {fileID: 21300000, guid: 145c5e8ff822cf24babaa144df9d1346, type: 3}
+  - {fileID: 21300000, guid: 768768807a4ae8044b92a809a2c256b0, type: 3}
   objectiveColours:
-  - {r: 0, g: 1, b: 0.64084506, a: 1}
-  - {r: 1, g: 0.41492444, b: 0, a: 1}
-  - {r: 0, g: 0.26089263, b: 1, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
   moves: 0
   totalObjectives: 0
   movesLabel: {fileID: 1843595770}

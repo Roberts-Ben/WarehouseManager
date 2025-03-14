@@ -2,101 +2,121 @@
   {
     "levelID": 1,
     "levelUnlocked": true,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 2,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 3,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 4,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 5,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 6,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 7,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 8,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 9,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 10,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 11,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 12,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 13,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 14,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 15,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 16,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 17,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 18,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 19,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   },
   {
     "levelID": 20,
     "levelUnlocked": false,
-    "levelCompleted": false
+    "levelCompleted": false,
+    "bestRating": 0
   }
 ]

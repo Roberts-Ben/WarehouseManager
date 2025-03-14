@@ -32,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7226751467406817018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1100, y: 450}
+  m_SizeDelta: {x: -100, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9097384625663108422
 CanvasRenderer:
@@ -309,9 +309,9 @@ RectTransform:
   - {fileID: 7684137546144983098}
   m_Father: {fileID: 7226751467406817018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 575, y: 275}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -25, y: -25}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &168445016388191190
@@ -577,7 +577,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7226751467406817018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -659,15 +659,20 @@ MonoBehaviour:
   - Reset Data?
   descriptions:
   - This is how to play...
-  - You win
+  - 
   - This will reset your level pogress. Levels will no longer be completed or unlocked!\nAre
     you sure?
+  panelSizes:
+  - {x: 1200, y: 600}
+  - {x: 0, y: 0}
+  - {x: 600, y: 600}
   icons: []
   actionButtons:
   - {fileID: 7652940291651769738}
   - {fileID: 3892281848863933930}
   title: {fileID: 3427318872871041889}
   description: {fileID: 2956689307104572337}
+  panel: {fileID: 7226751467406817018}
   icon: {fileID: 0}
 --- !u!1 &3892281848863933930
 GameObject:
@@ -703,9 +708,9 @@ RectTransform:
   - {fileID: 1188887618915024071}
   m_Father: {fileID: 7226751467406817018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -300, y: -300}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 300, y: 0}
   m_SizeDelta: {x: 300, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5807308105427562265
@@ -1106,10 +1111,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7226751467406817018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1200, y: 600}
+  m_SizeDelta: {x: 0, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8077790153245958953
 CanvasRenderer:
@@ -1183,9 +1188,9 @@ RectTransform:
   - {fileID: 294860798505090778}
   m_Father: {fileID: 7226751467406817018}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 300, y: -300}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -300, y: 0}
   m_SizeDelta: {x: 300, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &751282085719921169
