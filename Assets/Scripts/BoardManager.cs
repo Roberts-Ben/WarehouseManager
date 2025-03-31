@@ -31,7 +31,8 @@ public class BoardManager : MonoBehaviour
     private int tileID = 0;
     private int tileObjID = 0;
     private Vector3Int tilePos = new();
-    private Vector3Int tileObjOffset = new(1,1,-1);
+    private Vector3Int ObjOffset = new(1,1,-2);
+    private Vector3Int ObjTileOffset = new(1, 1, -1);
     private bool tileoccupied = false;
     private TYPE tileType;
 
@@ -82,7 +83,16 @@ public class BoardManager : MonoBehaviour
             }
             if (objToSpawn != null)
             {
-                GameObject go = Instantiate(objToSpawn, tile.Position + tileObjOffset, Quaternion.identity);
+                Vector3 finalPos = tile.Position;
+                if(isBox)
+                {
+                    finalPos += ObjOffset;
+                }
+                else
+                {
+                    finalPos += ObjTileOffset;
+                }
+                GameObject go = Instantiate(objToSpawn, finalPos, Quaternion.identity);
                 ObjectiveInfo info = go.GetComponent<ObjectiveInfo>();
                 SpriteRenderer spriteRenderer = go.GetComponent<SpriteRenderer>();
                 info.box = isBox;
@@ -157,7 +167,7 @@ public class BoardManager : MonoBehaviour
                 {
                     tilePos = new Vector3Int(x, -row, 0);
                     tileType = TYPE.FLOOR;
-                    GameObject player =  Instantiate(playerObj, (tilePos + tileObjOffset) - Vector3Int.forward, Quaternion.identity);
+                    GameObject player =  Instantiate(playerObj, (tilePos + ObjOffset) - Vector3Int.forward, Quaternion.identity);
                     player.transform.parent = transform;
                     tileToPlace = UnityEngine.Random.Range(0, floorTileBases.Count);
                 }

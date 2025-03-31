@@ -517,9 +517,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 145c5e8ff822cf24babaa144df9d1346, type: 3}
   - {fileID: 21300000, guid: 768768807a4ae8044b92a809a2c256b0, type: 3}
   objectiveColours:
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
-  - {r: 1, g: 1, b: 0, a: 1}
+  - {r: 0.2784314, g: 0.43137258, b: 0.76470596, a: 1}
+  - {r: 0.70980394, g: 0.16470589, b: 0.18039216, a: 1}
+  - {r: 0.7058824, g: 0.69411767, b: 0.21960786, a: 1}
   moves: 0
   totalObjectives: 0
   movesLabel: {fileID: 1843595770}
@@ -887,20 +887,20 @@ Tilemap:
     m_Data:
       e00: 0
       e01: 0
-      e02: -1.1990398e+20
-      e03: -1.1990398e+20
+      e02: 2.791732e+10
+      e03: 2.791732e+10
       e10: 0
       e11: 0
-      e12: 6.98e-43
-      e13: 6.98e-43
-      e20: 42.39691
-      e21: -8.061567e-31
-      e22: 2.0301794e-19
-      e23: -4.8521187e-10
+      e12: 7.57e-43
+      e13: 7.57e-43
+      e20: 6.3240077e+10
+      e21: 0.00000005358254
+      e22: -0.000000001469858
+      e23: 2.4283066
       e30: 4.5904e-41
-      e31: 6.98e-43
-      e32: 6.99e-43
-      e33: 7e-43
+      e31: 7.6e-43
+      e32: 7.57e-43
+      e33: 7.6e-43
   m_TileColorArray:
   - m_RefCount: 0
     m_Data: {r: 8.769617e-39, g: 0, b: 21.724108, a: 1e-45}
@@ -913,7 +913,7 @@ Tilemap:
   - m_RefCount: 0
     m_Data: {r: 8e-45, g: 0, b: 21.724108, a: 1e-45}
   - m_RefCount: 0
-    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
+    m_Data: {r: 2.9312e-41, g: 2.9312e-41, b: 2.9312e-41, a: 2.9312e-41}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
