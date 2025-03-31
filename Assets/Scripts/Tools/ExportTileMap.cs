@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine.Tilemaps;
 using System.Text;
 
-public class ConvertTilemapToJSON : ScriptableWizard
+public class ExportTileMap : ScriptableWizard
 {
     public string outputDirectory = "/Resources/";
     public string fileName = "newLevel";
@@ -32,7 +32,7 @@ public class ConvertTilemapToJSON : ScriptableWizard
     [MenuItem("Tools/Map Generation Tool/Export Map")]
     static void CreateWindow()
     {
-        ScriptableWizard.DisplayWizard<ConvertTilemapToJSON>("Map Generation Tool", "Export", "Refresh");
+        ScriptableWizard.DisplayWizard<ExportTileMap>("Map Generation Tool", "Export", "Refresh");
     }
 
     private void OnWizardOtherButton()

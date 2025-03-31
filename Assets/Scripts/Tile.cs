@@ -5,7 +5,8 @@ public enum TYPE
     WALL,
     FLOOR,
     BOX,
-    OBJECTIVE
+    OBJECTIVE,
+    PLAYER
 };
 
 [System.Serializable]

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using TMPro;
 using System.IO;
@@ -17,9 +16,12 @@ public class BoardManager : MonoBehaviour
     public List<Tile> tiles;
     public List<GameObject> objectives;
     public List<Objective> objectivePositions;
+
+    public TileBase playertileBase;
     public List<TileBase> floorTileBases;
     public List<TileBase> wallTileBases;
     public List<TileBase> objectiveTileBases;
+    public List<TileBase> objectiveBoxTileBases;
 
     public GameObject boxObjective;
     public GameObject targetObjective;
@@ -41,7 +43,7 @@ public class BoardManager : MonoBehaviour
 
     public TMP_Text movesLabel;
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -56,7 +58,7 @@ public class BoardManager : MonoBehaviour
         tiles = new List<Tile>();
         objectivePositions = new List<Objective>();
 
-        GenerateMapFromFile();
+        GenerateMapFromFile(Menu.instance.levelFile, false);
         tilemap.CompressBounds(); // Clamp the tilemap, in case it was edited recently
 
         PopulateObjectives();
@@ -121,9 +123,9 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    public void GenerateMapFromFile()
+    public void GenerateMapFromFile(string levelPath, bool loadedViaTool)
     {
-        StreamReader reader = new(Application.dataPath + "/Resources/" + Menu.instance.levelFile + ".txt", Encoding.Default);
+        StreamReader reader = new(Application.dataPath + "/Resources/" + levelPath + ".txt", Encoding.Default);
 
         string line = reader.ReadLine(); // Get the grid size here
         string[] subs = line.Split('x');
@@ -134,7 +136,11 @@ public class BoardManager : MonoBehaviour
         int row = 0;
 
         line = reader.ReadLine(); // Get the required moves for each rating
-        Menu.instance.levelInfos[Menu.instance.selectedLevel].LevelRatings = Array.ConvertAll(line.Split(' '), int.Parse);
+
+        if(!loadedViaTool)
+        {
+            Menu.instance.levelInfos[GetSelectedLevel(levelPath)].LevelRatings = Array.ConvertAll(line.Split(' '), int.Parse);
+        }
 
         while (!reader.EndOfStream)
         {
@@ -166,10 +172,14 @@ public class BoardManager : MonoBehaviour
                 else if (tileChar[x] == '/')
                 {
                     tilePos = new Vector3Int(x, -row, 0);
-                    tileType = TYPE.FLOOR;
-                    GameObject player =  Instantiate(playerObj, (tilePos + ObjOffset) - Vector3Int.forward, Quaternion.identity);
-                    player.transform.parent = transform;
+                    tileType = TYPE.PLAYER;
                     tileToPlace = UnityEngine.Random.Range(0, floorTileBases.Count);
+
+                    if (!loadedViaTool)
+                    {
+                        GameObject player = Instantiate(playerObj, (tilePos + ObjOffset) - Vector3Int.forward, Quaternion.identity);
+                        player.transform.parent = transform;
+                    }
                 }
                 else if ((int)tileChar[x] >= 65 && (int)tileChar[x] <= 90) // Upercase is box
                 {
@@ -177,41 +187,67 @@ public class BoardManager : MonoBehaviour
                     tileType = TYPE.BOX;
                     tileoccupied = true;
                     tileObjID = (int)tileChar[x] - 65;
-                    tileToPlace = UnityEngine.Random.Range(0, floorTileBases.Count);
+                    tileToPlace = tileObjID; // Force objective sprite                   
                 }
                 else if ((int)tileChar[x] >= 97 && (int)tileChar[x] <= 122) // lowecase is destination
                 {
                     tilePos = new Vector3Int(x, -row, 0);
                     tileType = TYPE.OBJECTIVE;
                     tileObjID = (int)tileChar[x] - 97;
-                    tileToPlace = 0;
+                    tileToPlace = tileObjID;
                 }
                 else
                 {
                     throw new Exception("Invalid character");
                 }
-                SwitchTile(tilePos, tileType, tileToPlace);
-                Tile newTile = new()
-                {
-                    ID = tileID,
-                    Position = tilePos,
-                    TileType = tileType,
-                    ObjectiveID = tileObjID,
-                    Occupied = tileoccupied
-                };
-                tiles.Add(newTile);
+                SwitchTile(tilePos, tileType, tileToPlace, loadedViaTool);
 
-                tileID++;
+                if (!loadedViaTool)
+                {
+                    Tile newTile = new()
+                    {
+                        ID = tileID,
+                        Position = tilePos,
+                        TileType = tileType,
+                        ObjectiveID = tileObjID,
+                        Occupied = tileoccupied
+                    };
+                    tiles.Add(newTile);
+
+                    tileID++;
+                }
             }
             row++;
         }
-        GameObject menuCam = Menu.instance.menuCamera;
-        GameObject gameCam = Menu.instance.gameCamera;
+        if(!loadedViaTool)
+        {
+            GameObject menuCam = Menu.instance.menuCamera;
+            GameObject gameCam = Menu.instance.gameCamera;
 
-        gameCam.transform.position = new Vector3(width / 2 + 1, -height / 2 + 2,-11);
-        gameCam.GetComponent<Camera>().orthographicSize = width / 2 + 1;
-        menuCam.SetActive(false);
-        gameCam.SetActive(true);
+            gameCam.transform.position = new Vector3(width / 2 + 1, -height / 2 + 2, -11);
+            gameCam.GetComponent<Camera>().orthographicSize = width / 2 + 1;
+            menuCam.SetActive(false);
+            gameCam.SetActive(true);
+        }
+    }
+
+    public int GetSelectedLevel(string levelName)
+    {
+        List<int> levelID = new();
+        foreach (var s in levelName.Split('-'))
+        {
+            int num;
+            if (int.TryParse(s, out num))
+                levelID.Add(num);
+        }
+
+        return (levelID[0] * levelID[1]) - 1;
+    }
+
+    public void ClearTileMap()
+    {
+        tilemap.ClearAllTiles();
+        tiles.Clear();
     }
 
     public GameObject FindObjectiveObj(Vector3 pos)
@@ -226,7 +262,7 @@ public class BoardManager : MonoBehaviour
         return null;
     }
 
-    public void SwitchTile(Vector3Int pos, TYPE tile,  int tileIndex)
+    public void SwitchTile(Vector3Int pos, TYPE tile,  int tileIndex, bool loadedViaTool)
     {
         switch (tile)
         {
@@ -237,10 +273,27 @@ public class BoardManager : MonoBehaviour
                 tilemap.SetTile(pos, floorTileBases[tileIndex]);
                 break;
             case TYPE.BOX:
-                tilemap.SetTile(pos, floorTileBases[tileIndex]);
+                if(!loadedViaTool)
+                {
+                    tilemap.SetTile(pos, floorTileBases[tileIndex]);
+                }
+                else
+                {
+                    tilemap.SetTile(pos, objectiveBoxTileBases[tileIndex]);
+                }
                 break;
             case TYPE.OBJECTIVE:
                 tilemap.SetTile(pos, objectiveTileBases[tileIndex]);
+                break;
+            case TYPE.PLAYER:
+                if(!loadedViaTool)
+                {
+                    tilemap.SetTile(pos, floorTileBases[tileIndex]);
+                }
+                else
+                {
+                    tilemap.SetTile(pos, playertileBase);
+                }
                 break;
             default:
                 break;
