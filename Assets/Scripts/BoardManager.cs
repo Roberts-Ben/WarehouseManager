@@ -10,6 +10,7 @@ using System;
 public class BoardManager : MonoBehaviour
 {
     public static BoardManager instance;
+    public LevelCompletePopup levelCompletePopup;
 
     public Tilemap tilemap;
 
@@ -40,6 +41,7 @@ public class BoardManager : MonoBehaviour
 
     public int moves;
     public int totalObjectives;
+    public int levelID;
 
     public TMP_Text movesLabel;
 
@@ -59,6 +61,7 @@ public class BoardManager : MonoBehaviour
         objectivePositions = new List<Objective>();
 
         GenerateMapFromFile(Menu.instance.levelFile, false);
+        levelID = Menu.instance.selectedLevel;
         tilemap.CompressBounds(); // Clamp the tilemap, in case it was edited recently
 
         PopulateObjectives();
@@ -413,7 +416,8 @@ public class BoardManager : MonoBehaviour
         {
             Debug.LogWarning("Level Complete");
             Menu.instance.LevelComplete(moves);
-            SceneManager.UnloadSceneAsync(1);
+
+            levelCompletePopup.DisplayPopup(moves, levelID);
         }
     }
 

@@ -6,7 +6,6 @@ using UnityEngine;
 public enum POPUPTYPE
 {
     HOWTOPLAY,
-    LEVELCOMPLETE,
     CONFIRMDATARESET,
     CONFIRMQUIT
 }
@@ -42,8 +41,11 @@ public class InfoPopup : MonoBehaviour
                 title.text = titles[2];
                 description.text = descriptions[2];
                 panel.sizeDelta = panelSizes[2];
-                actionButtons[0].SetActive(true); // Yes/No
-                actionButtons[1].SetActive(true);
+                foreach (GameObject go in actionButtons)
+                {
+                    go.GetComponent<RectTransform>().localPosition += new Vector3 (this.GetComponent<RectTransform>().sizeDelta.x / 2, 0f, 0f);
+                    go.SetActive(true);
+                }
                 break;
             default:
                 break;

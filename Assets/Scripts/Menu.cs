@@ -193,10 +193,6 @@ public class Menu : MonoBehaviour
     }
     public void LevelComplete(int moves)
     {
-        backgroundMap.SetActive(true);
-        menuCamera.SetActive(true);
-        gameCamera.SetActive(false);
-
         LevelInfo levelInfo = levelInfos[selectedLevel];
 
         if (!levelInfo.LevelCompleted)
@@ -208,14 +204,23 @@ public class Menu : MonoBehaviour
 
         for (int i = 0; i < levelInfo.LevelRatings.Length; i++)
         {
-            if(moves <= levelInfo.LevelRatings[i]) // TODO: Ensure we don't updae the score if it's worse
+            if(moves <= levelInfo.LevelRatings[i])
             {
-                // bronze, silver, gold
-                levelInfo.BestRating = i + 1;
+                if(i >= levelInfo.BestRating)
+                {
+                    levelInfo.BestRating = i + 1;
+                }
             }
         }
 
         SavePrefs();
+    }
+
+    public void ReturnToMenu()
+    {
+        backgroundMap.SetActive(true);
+        menuCamera.SetActive(true);
+        gameCamera.SetActive(false);
         canvas.SetActive(true);
         LoadAndSortLevels();
     }
@@ -238,6 +243,7 @@ public class Menu : MonoBehaviour
             {
                 levelInfos[i].LevelUnlocked = levelSaveData[i].levelUnlocked;
                 levelInfos[i].LevelCompleted = levelSaveData[i].levelCompleted;
+                levelInfos[i].BestRating = levelSaveData[i].bestRating;
             }
         }
         else
@@ -259,7 +265,8 @@ public class Menu : MonoBehaviour
             {
                 levelID = (10 * (levelInfo.WorldID - 1)) + levelInfo.LevelID,
                 levelUnlocked = levelInfo.LevelUnlocked,
-                levelCompleted = levelInfo.LevelCompleted
+                levelCompleted = levelInfo.LevelCompleted,
+                bestRating = levelInfo.BestRating
             };
             levelSaveData.Add(levelData);
         }
