@@ -2,18 +2,18 @@
   {
     "levelID": 1,
     "levelUnlocked": true,
-    "levelCompleted": false,
-    "bestRating": 0
+    "levelCompleted": true,
+    "bestRating": 3
   },
   {
     "levelID": 2,
-    "levelUnlocked": false,
-    "levelCompleted": false,
-    "bestRating": 0
+    "levelUnlocked": true,
+    "levelCompleted": true,
+    "bestRating": 2
   },
   {
     "levelID": 3,
-    "levelUnlocked": false,
+    "levelUnlocked": true,
     "levelCompleted": false,
     "bestRating": 0
   },

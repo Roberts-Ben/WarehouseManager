@@ -61,7 +61,7 @@ public class InfoPopup : MonoBehaviour
 
     public void ConfirmDataReset()
     {
-        Menu.instance.ResetProgress();
+        Menu.instance.InitPrefs();
         ClosePopup();
     }
 }

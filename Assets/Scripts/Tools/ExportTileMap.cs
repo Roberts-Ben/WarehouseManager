@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine.Tilemaps;
 using System.Text;
 
+[ExecuteInEditMode]
 public class ExportTileMap : ScriptableWizard
 {
     public string outputDirectory = "/Resources/";
@@ -64,15 +65,15 @@ public class ExportTileMap : ScriptableWizard
     }
 
     void OnWizardCreate()
-    {
+    {       
         tileMap.CompressBounds();
 
         Vector3Int tileMapSize = new(tileMap.size.x, tileMap.size.y, 0);
         Vector3Int tilemapOrigin = tileMap.origin;
 
+        string filePath = Application.dataPath + "/Resources/" + fileName + ".txt";
         TileBase tileBase;
-
-        StreamWriter writer = new (Application.dataPath + "/Resources/" + fileName + ".txt", true, Encoding.Default);
+        StreamWriter writer = new (filePath, false, Encoding.Default);
 
         writer.Write(tileMapSize.x + "x" + tileMapSize.y); // Set map size
         writer.WriteLine();
@@ -83,7 +84,7 @@ public class ExportTileMap : ScriptableWizard
 
         for (int y = (tilemapOrigin.y + tileMapSize.y) - 1; y >= tileMap.origin.y; y--)
         {
-            for (int x = tileMap.origin.x; x < tileMapSize.x - 1; x++)
+            for (int x = tilemapOrigin.x; x < tilemapOrigin.x +  tileMapSize.x; x++)
             {
                 Vector3Int tilePos = new(x, y, 0);
                 tileBase = tileMap.GetTile(tilePos);

@@ -278,7 +278,7 @@ public class BoardManager : MonoBehaviour
             case TYPE.BOX:
                 if(!loadedViaTool)
                 {
-                    tilemap.SetTile(pos, floorTileBases[tileIndex]);
+                    tilemap.SetTile(pos, floorTileBases[UnityEngine.Random.Range(0, floorTileBases.Count)]);
                 }
                 else
                 {
@@ -414,9 +414,7 @@ public class BoardManager : MonoBehaviour
 
         if(objectivesMet == totalObjectives)
         {
-            Debug.LogWarning("Level Complete");
             Menu.instance.LevelComplete(moves);
-
             levelCompletePopup.DisplayPopup(moves, levelID);
         }
     }
